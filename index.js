@@ -5,15 +5,29 @@ const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
-const guildId = process.env.GUILD_ID;
+const guildId = process.env.GUILD_ID; // To be removed when the the bot is global
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
+});
+
+// Event
+client.on(Events.MessageCreate, async (msg) => {
+  if (msg.content === "Hi") {
+    // If a user sends "Hi" to the server, the bot will reply
+    msg.reply("Hello!");
+  }
 });
 
 // Client commands
