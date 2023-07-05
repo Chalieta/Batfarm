@@ -1,8 +1,12 @@
 // Require the necessary discord.js classes
 require("dotenv").config();
+const { Op } = require("sequelize");
+const fetch = require("node-fetch");
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
+const { Users, Shop } = require("./dbObjects.js");
+const { addBalance, getBalance } = require("./helperMethods.js");
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID; // To be removed when the the bot is global
@@ -16,17 +20,34 @@ const client = new Client({
   ],
 });
 
+// Initialize currency to keep track of users' balances
+const currency = new Collection();
+
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
-client.once(Events.ClientReady, (c) => {
+client.once(Events.ClientReady, async (c) => {
+  const storedBalances = await Users.findAll();
+  storedBalances.forEach((b) => currency.set(b.user_id, b));
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-// Event
+// Events
 client.on(Events.MessageCreate, async (msg) => {
+  if (msg.author.bot) return;
   if (msg.content === "Hi") {
     // If a user sends "Hi" to the server, the bot will reply
-    msg.reply("Hello!");
+    fetch("https://zenquotes.io/api/random")
+      .then((res) => res.json())
+      .then((data) => msg.reply(`Hello, ${msg.author.username}! ${data[0].q}`));
+  } else if (
+    msg.content.toLowerCase() === "bat!work" ||
+    msg.content.toLowerCase() === "bat!w"
+  ) {
+    addBalance(currency, msg.author.id, 5).then((u) =>
+      msg.reply(
+        `${msg.author.username} went to work and earned 5 batcoins. Your balance is now ${u.balance}.`
+      )
+    );
   }
 });
 
