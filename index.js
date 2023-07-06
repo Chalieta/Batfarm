@@ -12,7 +12,12 @@ const {
   codeBlock,
 } = require("discord.js");
 const { Users, Shop, Inventory } = require("./dbObjects.js");
-const { addBalance, getBalance } = require("./helperMethods.js");
+const {
+  addBalance,
+  getBalance,
+  deposit,
+  withdraw,
+} = require("./helperMethods.js");
 const { log } = require("node:util");
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
@@ -55,13 +60,13 @@ client.on(Events.MessageCreate, async (msg) => {
     let amountEarned = Math.floor(Math.random() * 20) + 10;
     addBalance(currency, msg.author.id, amountEarned).then((u) =>
       msg.reply(
-        `${msg.author.username} went to work and earned ${amountEarned} batcoins.`
+        `${msg.author.username} went to work and earned 🪙${amountEarned} batcoins.`
       )
     );
   } else if (command === "balance" || command === "bal") {
     const balance = getBalance(currency, msg.author.id);
     msg.reply(
-      `You have ${balance.wallet} batcoins on hand and ${balance.bank} batcoins in the bank.`
+      `You have 🦇🪙${balance.wallet} on hand and 🦇🪙${balance.bank} in the bank.`
     );
   } else if (command === "inventory" || command === "inv" || command === "i") {
     const user = await Users.findOne({ where: { user_id: msg.author.id } });
@@ -80,18 +85,15 @@ client.on(Events.MessageCreate, async (msg) => {
         "Mention the user you want to transfer batcoins to. For example: `bat tf @Batfarm 5`"
       );
     }
-
     let target;
     for (const u of msg.mentions.users.keys()) {
       target = u;
     }
-
     if (args.length < 2) {
       return msg.reply(
         "Provide an amount you want to transfer. For example: `bat tf @Batfarm 5`"
       );
     }
-
     // Parse amount of money
     const amount = parseInt(args[1]);
     if (isNaN(amount)) {
@@ -99,26 +101,22 @@ client.on(Events.MessageCreate, async (msg) => {
         "Provide a valid amount in a valid format. For example: `bat tf @Batfarm 5`"
       );
     }
-
     // Check if the amount of money <= 0
     if (amount <= 0) {
       return msg.reply("Provide an amount greater than 0.");
     }
-
     // Check if the amount of money <= wallet
     const balance = getBalance(currency, msg.author.id);
     if (amount > balance.wallet) {
       return msg.reply(
-        `Transfer failed! You only have ${balance.wallet} batcoins on hand.`
+        `Transfer failed! You only have 🪙${balance.wallet} batcoins on hand.`
       );
     }
-
     // Transfer
     addBalance(currency, msg.author.id, -amount);
     addBalance(currency, target, amount);
-
     return msg.reply(
-      `Successfully transferred ${amount} batcoins to <@${target}>.`
+      `Successfully transferred 🪙${amount} batcoins to <@${target}>.`
     );
   } else if (command === "shop") {
     const items = await Shop.findAll();
@@ -133,15 +131,13 @@ client.on(Events.MessageCreate, async (msg) => {
     const item = await Shop.findOne({
       where: { name: { [Op.like]: itemName } },
     });
-
     if (!item) return msg.reply(`That item doesn't exist.`);
     const balance = getBalance(currency, msg.author.id);
     if (item.cost > balance.wallet) {
       return msg.reply(
-        `You currently have ${balance.wallet}, but the ${item.name} costs ${item.cost}!`
+        `You currently have 🪙${balance.wallet}, but the ${item.name} costs 🪙${item.cost}!`
       );
     }
-
     const user = await Users.findOne({
       where: { user_id: msg.author.id },
     });
@@ -149,6 +145,32 @@ client.on(Events.MessageCreate, async (msg) => {
     await user.addItem(msg.author.id, item);
 
     return msg.reply(`You've bought: ${item.name}.`);
+  } else if (command === "deposit" || command === "dep") {
+    if (args.length < 1) {
+      return msg.reply(
+        "Provide an amount you want to deposit. For example: `bat dep 20`"
+      );
+    }
+    // Parse amount of money
+    const amount = parseInt(args[0]);
+    if (isNaN(amount)) {
+      return msg.reply(
+        "Provide a valid amount in a valid format. For example: `bat dep 20`"
+      );
+    }
+    // Check if the amount of money <= 0
+    if (amount <= 0) {
+      return msg.reply("Provide an amount greater than 0.");
+    }
+    // Check if the amount of money <= wallet
+    const balance = getBalance(currency, msg.author.id);
+    if (amount > balance.wallet) {
+      return msg.reply(
+        `Deposit failed! You only have 🪙${balance.wallet} batcoins on hand.`
+      );
+    }
+    deposit(currency, msg.author.id, amount);
+    return msg.reply(`Successfully deposited 🪙${amount} batcoins`);
   }
 });
 
