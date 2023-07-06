@@ -32,7 +32,7 @@ async function deposit(currency, id, amount) {
   return null; // Cannot deposit money if user doesn't exist
 }
 
-async function withdraw(currenct, id, amount) {
+async function withdraw(currency, id, amount) {
   // Withdraw money from bank to wallet
   const user = currency.get(id);
 

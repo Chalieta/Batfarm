@@ -60,13 +60,13 @@ client.on(Events.MessageCreate, async (msg) => {
     let amountEarned = Math.floor(Math.random() * 20) + 10;
     addBalance(currency, msg.author.id, amountEarned).then((u) =>
       msg.reply(
-        `${msg.author.username} went to work and earned 🪙${amountEarned} batcoins.`
+        `${msg.author.username} went to work and earned 🪙${amountEarned}.`
       )
     );
   } else if (command === "balance" || command === "bal") {
     const balance = getBalance(currency, msg.author.id);
     msg.reply(
-      `You have 🦇🪙${balance.wallet} on hand and 🦇🪙${balance.bank} in the bank.`
+      `You have 🪙${balance.wallet} on hand and 🪙${balance.bank} in the bank.`
     );
   } else if (command === "inventory" || command === "inv" || command === "i") {
     const user = await Users.findOne({ where: { user_id: msg.author.id } });
@@ -116,7 +116,7 @@ client.on(Events.MessageCreate, async (msg) => {
     addBalance(currency, msg.author.id, -amount);
     addBalance(currency, target, amount);
     return msg.reply(
-      `Successfully transferred 🪙${amount} batcoins to <@${target}>.`
+      `You have successfully transferred 🪙${amount} to <@${target}>!`
     );
   } else if (command === "shop") {
     const items = await Shop.findAll();
@@ -146,13 +146,15 @@ client.on(Events.MessageCreate, async (msg) => {
 
     return msg.reply(`You've bought: ${item.name}.`);
   } else if (command === "deposit" || command === "dep") {
+    const balance = getBalance(currency, msg.author.id);
     if (args.length < 1) {
       return msg.reply(
         "Provide an amount you want to deposit. For example: `bat dep 20`"
       );
     }
     // Parse amount of money
-    const amount = parseInt(args[0]);
+    const amount =
+      args[0].toLowerCase() === "all" ? balance.wallet : parseInt(args[0]);
     if (isNaN(amount)) {
       return msg.reply(
         "Provide a valid amount in a valid format. For example: `bat dep 20`"
@@ -163,14 +165,48 @@ client.on(Events.MessageCreate, async (msg) => {
       return msg.reply("Provide an amount greater than 0.");
     }
     // Check if the amount of money <= wallet
-    const balance = getBalance(currency, msg.author.id);
     if (amount > balance.wallet) {
       return msg.reply(
-        `Deposit failed! You only have 🪙${balance.wallet} batcoins on hand.`
+        `Deposit failed! You only have 🪙${balance.wallet} on hand.`
       );
     }
     deposit(currency, msg.author.id, amount);
-    return msg.reply(`Successfully deposited 🪙${amount} batcoins`);
+    return msg.reply(
+      `You have successfully deposited 🪙${amount} to Gotham National Bank!`
+    );
+  } else if (command === "withdraw" || command === "wd") {
+    const balance = getBalance(currency, msg.author.id);
+    if (args.length < 1) {
+      return msg.reply(
+        "Provide an amount you want to withdraw. For example: `bat wd 20`"
+      );
+    }
+    // Parse amount of money
+    const amount =
+      args[0].toLowerCase() === "all" ? balance.bank : parseInt(args[0]);
+    if (isNaN(amount)) {
+      return msg.reply(
+        "Provide a valid amount in a valid format. For example: `bat wd 20`"
+      );
+    }
+    // Check if the amount of money <= 0
+    if (amount <= 0) {
+      return msg.reply("Provide an amount greater than 0.");
+    }
+    // Check if the amount of money <= wallet
+    if (amount > balance.bank) {
+      return msg.reply(
+        `Withdraw failed! You only have 🪙${balance.wallet} in the bank.`
+      );
+    }
+    withdraw(currency, msg.author.id, amount);
+    return msg.reply(
+      `You have successfully withdrawn 🪙${amount} from Gotham National Bank!`
+    );
+  } else if (command === "jail") {
+    console.log(
+      msg.author.displayAvatarURL({ dynamic: true, size: 4096, format: "png" })
+    );
   }
 });
 
