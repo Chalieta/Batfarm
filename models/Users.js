@@ -6,9 +6,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         primaryKey: true,
       },
-      balance: {
+      wallet: {
         type: DataTypes.INTEGER,
         defaultValue: 100,
+        allowNull: false,
+      },
+      bank: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
         allowNull: false,
       },
     },

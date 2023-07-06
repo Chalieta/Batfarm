@@ -11,7 +11,5 @@ module.exports = {
       .then((quote) =>
         interaction.reply(`${quote.quote} —${quote.character} (${quote.anime})`)
       );
-
-    // await interaction.reply("quote");
   },
 };

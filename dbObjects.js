@@ -17,9 +17,9 @@ const Inventory = require("./models/Inventory.js")(
 Inventory.belongsTo(Shop, { foreignKey: "item_id", as: "item" });
 
 Reflect.defineProperty(Users.prototype, "addItem", {
-  value: async (item) => {
+  value: async (id, item) => {
     const userItem = await Inventory.findOne({
-      where: { user_id: this.user_id, item_id: item.id }, // Check if the item exists in user's inventory
+      where: { user_id: id, item_id: item.id }, // Check if the item exists in user's inventory
     });
 
     if (userItem) {
@@ -30,7 +30,7 @@ Reflect.defineProperty(Users.prototype, "addItem", {
 
     return Inventory.create({
       // Initialize amount to 1
-      user_id: this.user_id,
+      user_id: id,
       item_id: item.id,
       amount: 1,
     });
@@ -38,9 +38,10 @@ Reflect.defineProperty(Users.prototype, "addItem", {
 });
 
 Reflect.defineProperty(Users.prototype, "getItems", {
-  value: () => {
+  value: (id) => {
     return Inventory.findAll({
-      where: { user_id: this.user_id },
+      // where: { user_id: this.user_id },
+      where: { user_id: id },
       include: ["item"],
     });
   },
