@@ -19,9 +19,15 @@ sequelize
   .sync({ force })
   .then(async () => {
     const shop = [
-      Shop.upsert({ name: "Fishing Rod", cost: 20 }), // Update or insert
-      Shop.upsert({ name: "Tomato Seed", cost: 10 }),
-      Shop.upsert({ name: "Eggplant Seed", cost: 10 }),
+      Shop.upsert({ name: "Fishing Rod", cost: 500 }), // Update or insert
+      Shop.upsert({ name: "Tomato Seed", cost: 20 }),
+      Shop.upsert({ name: "Eggplant Seed", cost: 20 }),
+      Shop.upsert({ name: "Potato Seed", cost: 30 }),
+      Shop.upsert({ name: "Pepper Seed", cost: 30 }),
+      Shop.upsert({ name: "Tomato", cost: 60 }),
+      Shop.upsert({ name: "Eggplant", cost: 60 }),
+      Shop.upsert({ name: "Potato", cost: 80 }),
+      Shop.upsert({ name: "Pepper", cost: 80 }),
     ];
 
     await Promise.all(shop);
