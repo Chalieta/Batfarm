@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.41",
+    "canvas": "^2.11.2",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "node-fetch": "^2.6.12",
