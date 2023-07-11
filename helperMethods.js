@@ -16,7 +16,9 @@ async function addBalance(currency, id, amount) {
 
 function getBalance(currency, id) {
   const user = currency.get(id);
-  return user ? { wallet: user.wallet, bank: user.bank } : 0;
+  return user
+    ? { wallet: user.wallet, bank: user.bank }
+    : { wallet: 100, bank: 0 };
 }
 
 async function deposit(currency, id, amount) {
