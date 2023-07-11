@@ -20,7 +20,7 @@ exports.run = async (client, msg, args) => {
     name: "jail.png",
   });
   return msg.reply({
-    content: `<@${jailed.id}> has been arrested by GCPD and jailed!`,
+    content: `${jailed} has been arrested by GCPD and jailed!`,
     files: [attachment],
   });
 };
