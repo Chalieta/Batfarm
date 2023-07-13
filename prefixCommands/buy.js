@@ -1,4 +1,4 @@
-const { Users, Shop } = require("../dbObjects.js");
+const { Users, Inventory, Shop } = require("../dbObjects.js");
 const { addBalance, getBalance } = require("../helperMethods.js");
 const { Op } = require("sequelize");
 
@@ -11,6 +11,18 @@ exports.run = async (client, msg, args) => {
     where: { name: { [Op.like]: itemName } },
   });
   if (!item) return msg.reply(`That item doesn't exist.`);
+  if (item.name === "Fishing Rod") {
+    // Check if user already has a fishing rod
+    const fishingRod = await Inventory.findOne({
+      where: { item_id: 1, user_id: msg.author.id },
+    });
+
+    if (fishingRod) {
+      return msg.reply(
+        "You have a fishing rod! You can only have 1 fishing rod."
+      );
+    }
+  }
   const balance = getBalance(client.currency, msg.author.id);
   if (item.cost > balance.wallet) {
     return msg.reply(

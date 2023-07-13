@@ -19,15 +19,25 @@ sequelize
   .sync({ force })
   .then(async () => {
     const shop = [
-      Shop.upsert({ name: "Fishing Rod", cost: 500 }), // Update or insert
+      // Update or insert
+      Shop.upsert({ name: "Fishing Rod", cost: 500, counter: 5 }),
       Shop.upsert({ name: "Tomato Seed", cost: 20 }),
       Shop.upsert({ name: "Eggplant Seed", cost: 20 }),
-      Shop.upsert({ name: "Potato Seed", cost: 30 }),
+      Shop.upsert({ name: "Corn Seed", cost: 30 }),
       Shop.upsert({ name: "Pepper Seed", cost: 30 }),
-      Shop.upsert({ name: "Tomato", cost: 60 }),
-      Shop.upsert({ name: "Eggplant", cost: 60 }),
-      Shop.upsert({ name: "Potato", cost: 80 }),
-      Shop.upsert({ name: "Pepper", cost: 80 }),
+      Shop.upsert({ name: "Tomato", cost: 60, counter: 3 }),
+      Shop.upsert({ name: "Eggplant", cost: 60, counter: 3 }),
+      Shop.upsert({ name: "Corn", cost: 80, counter: 3 }),
+      Shop.upsert({ name: "Pepper", cost: 8, counter: 3 }),
+      Shop.upsert({ name: "Carp", cost: 80 }),
+      Shop.upsert({ name: "Crab", cost: 80 }),
+      Shop.upsert({ name: "Squid", cost: 80 }),
+      Shop.upsert({ name: "Lobster", cost: 100 }),
+      Shop.upsert({ name: "Salmon", cost: 100 }),
+      Shop.upsert({ name: "Snapper", cost: 100 }),
+      Shop.upsert({ name: "Sturgeon", cost: 500 }),
+      Shop.upsert({ name: "Tuna", cost: 500 }),
+      Shop.upsert({ name: "Shark", cost: 1000 }),
     ];
 
     await Promise.all(shop);

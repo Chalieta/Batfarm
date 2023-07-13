@@ -26,3 +26,5 @@ exports.run = (client, msg, args) => {
 };
 
 exports.name = "rob";
+
+// exports.cooldown = 2 * 60 * 60; // 2-hour cooldown

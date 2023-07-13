@@ -12,3 +12,5 @@ exports.run = (client, msg, args) => {
 exports.name = "work";
 
 exports.aliases = ["w"];
+
+// exports.cooldown = 30 * 60; // 30-minute cooldown

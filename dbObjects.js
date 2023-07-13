@@ -33,7 +33,26 @@ Reflect.defineProperty(Users.prototype, "addItem", {
       user_id: id,
       item_id: item.id,
       amount: 1,
+      counter: item.counter,
     });
+  },
+});
+
+Reflect.defineProperty(Users.prototype, "removeItem", {
+  value: async (id, item) => {
+    const userItem = await Inventory.findOne({
+      where: { user_id: id, item_id: item.id }, // Check if the item exists in user's inventory
+    });
+
+    if (userItem && userItem.amount > 1) {
+      // Subtract from the existing amount
+      userItem.amount -= 1;
+      return userItem.save();
+    }
+
+    if (userItem && userItem.amount == 1) {
+      return Inventory.destroy({ where: { user_id: id, item_id: item.id } });
+    }
   },
 });
 
