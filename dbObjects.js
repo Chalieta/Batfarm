@@ -17,14 +17,14 @@ const Inventory = require("./models/Inventory.js")(
 Inventory.belongsTo(Shop, { foreignKey: "item_id", as: "item" });
 
 Reflect.defineProperty(Users.prototype, "addItem", {
-  value: async (id, item) => {
+  value: async (id, item, quantity) => {
     const userItem = await Inventory.findOne({
       where: { user_id: id, item_id: item.id }, // Check if the item exists in user's inventory
     });
 
     if (userItem) {
       // Add to the existing amount
-      userItem.amount += 1;
+      userItem.amount += quantity;
       return userItem.save();
     }
 
@@ -32,25 +32,25 @@ Reflect.defineProperty(Users.prototype, "addItem", {
       // Initialize amount to 1
       user_id: id,
       item_id: item.id,
-      amount: 1,
+      amount: quantity,
       counter: item.counter,
     });
   },
 });
 
 Reflect.defineProperty(Users.prototype, "removeItem", {
-  value: async (id, item) => {
+  value: async (id, item, quantity) => {
     const userItem = await Inventory.findOne({
       where: { user_id: id, item_id: item.id }, // Check if the item exists in user's inventory
     });
 
-    if (userItem && userItem.amount > 1) {
+    if (userItem && userItem.amount > quantity) {
       // Subtract from the existing amount
-      userItem.amount -= 1;
+      userItem.amount -= quantity;
       return userItem.save();
     }
 
-    if (userItem && userItem.amount == 1) {
+    if (userItem && userItem.amount <= quantity) {
       return Inventory.destroy({ where: { user_id: id, item_id: item.id } });
     }
   },
