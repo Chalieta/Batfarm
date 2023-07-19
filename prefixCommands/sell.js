@@ -6,7 +6,11 @@ exports.run = async (client, msg, args) => {
   if (args.length < 1) {
     return msg.reply("Provide the name of the item you want to sell.");
   }
+
   const itemName = args[0];
+  if (itemName.toLowerCase() === "fishing" && args[1].toLowerCase() === "rod")
+    return msg.reply("You cannot sell your fishing rod.");
+
   const item = await Shop.findOne({
     where: { name: { [Op.like]: itemName } },
   });

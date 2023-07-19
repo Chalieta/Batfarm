@@ -6,7 +6,7 @@ exports.run = (client, msg, args) => {
     msg.reply(
       `Your daily reward of 🪙${amountEarned} has been successfully claimed!`
     );
-    // const channel = client.channels.cache.get("881377807362588706");
+    // const channel = client.channels.cache.get(msg.channelId);
     // channel.send(".daily");
   });
 };
