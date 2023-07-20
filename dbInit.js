@@ -12,6 +12,7 @@ const sequelize = new Sequelize("database", "username", "password", {
 const Shop = require("./models/Shop.js")(sequelize, Sequelize.DataTypes);
 require("./models/Users.js")(sequelize, Sequelize.DataTypes);
 require("./models/Inventory.js")(sequelize, Sequelize.DataTypes);
+require("./models/Garden.js")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
@@ -28,7 +29,7 @@ sequelize
       Shop.upsert({ name: "Tomato", cost: 60, counter: 3 }),
       Shop.upsert({ name: "Eggplant", cost: 60, counter: 3 }),
       Shop.upsert({ name: "Corn", cost: 80, counter: 3 }),
-      Shop.upsert({ name: "Pepper", cost: 8, counter: 3 }),
+      Shop.upsert({ name: "Pepper", cost: 80, counter: 3 }),
       Shop.upsert({ name: "Carp", cost: 80 }),
       Shop.upsert({ name: "Crab", cost: 80 }),
       Shop.upsert({ name: "Squid", cost: 80 }),

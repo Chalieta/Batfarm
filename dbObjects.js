@@ -13,8 +13,10 @@ const Inventory = require("./models/Inventory.js")(
   sequelize,
   Sequelize.DataTypes
 );
+const Garden = require("./models/Garden.js")(sequelize, Sequelize.DataTypes);
 
 Inventory.belongsTo(Shop, { foreignKey: "item_id", as: "item" });
+Garden.belongsTo(Shop, { foreignKey: "item_id", as: "item" });
 
 Reflect.defineProperty(Users.prototype, "addItem", {
   value: async (id, item, quantity) => {
@@ -66,4 +68,45 @@ Reflect.defineProperty(Users.prototype, "getItems", {
   },
 });
 
-module.exports = { Users, Shop, Inventory };
+Reflect.defineProperty(Users.prototype, "addPlant", {
+  value: (id, plant, quantity) => {
+    for (var i = 0; i < quantity; ++i) {
+      Garden.create({
+        user_id: id,
+        item_id: plant.id,
+        counter: plant.counter,
+      });
+    }
+    return;
+  },
+});
+
+Reflect.defineProperty(Users.prototype, "removePlant", {
+  value: async (id, plant, quantity) => {
+    const plants = await Garden.findAll({
+      where: { user_id: id, item_id: plant.id, counter: 0 },
+      include: ["item"],
+    });
+
+    plants.forEach((p) => {
+      if (quantity > 0) {
+        p.destroy();
+        quantity--;
+      }
+    });
+  },
+});
+
+Reflect.defineProperty(Users.prototype, "getPlants", {
+  value: (id) => {
+    return Garden.findAll({
+      // where: { user_id: this.user_id },
+      where: { user_id: id },
+      include: ["item"],
+    });
+  },
+});
+
+// Harvest - from Garden to Inventory
+
+module.exports = { Users, Shop, Inventory, Garden };

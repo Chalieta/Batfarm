@@ -4,7 +4,8 @@ exports.run = async (client, msg, args) => {
   const user = await Users.findOne({ where: { user_id: msg.author.id } });
   const items = await user.getItems(msg.author.id);
 
-  if (!items.length) return msg.reply(`${msg.author.username} has nothing!`);
+  if (!items.length)
+    return msg.reply(`${msg.author.username}'s inventory is empty!`);
 
   return msg.reply(
     `${msg.author.username}'s Inventory:\n${items

@@ -62,7 +62,7 @@ exports.run = async (client, msg, args) => {
     });
     if (!item) console.log(`${fishCaught} doesn't exist.`);
 
-    await user.addItem(msg.author.id, item);
+    await user.addItem(msg.author.id, item, 1);
 
     msg.reply(`You caught a ${fishCaught} ${fishEmojis[random]}!`);
   }
