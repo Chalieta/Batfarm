@@ -39,6 +39,12 @@ sequelize
       Shop.upsert({ name: "Sturgeon", cost: 500 }),
       Shop.upsert({ name: "Tuna", cost: 500 }),
       Shop.upsert({ name: "Shark", cost: 1000 }),
+      Shop.upsert({ name: "Chicken", cost: 2000, counter: 10 }),
+      Shop.upsert({ name: "Sheep", cost: 3000, counter: 10 }),
+      Shop.upsert({ name: "Cow", cost: 5000, counter: 10 }),
+      Shop.upsert({ name: "Egg", cost: 250 }),
+      Shop.upsert({ name: "Wool", cost: 350 }),
+      Shop.upsert({ name: "Milk", cost: 550 }),
     ];
 
     await Promise.all(shop);

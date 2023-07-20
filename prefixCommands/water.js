@@ -26,3 +26,5 @@ exports.run = async (client, msg, args) => {
 };
 
 exports.name = "water";
+
+// exports.cooldown = 12 * 60 * 60; // 12-hour cooldown
