@@ -1,5 +1,5 @@
 const { Users, Inventory, Shop } = require("../dbObjects.js");
-const { addBalance, getBalance } = require("../helperMethods.js");
+const { addBalance } = require("../helperMethods.js");
 const { Op } = require("sequelize");
 
 exports.run = async (client, msg, args) => {

@@ -8,17 +8,21 @@ async function addBalance(currency, id, amount) {
     return user.save();
   }
 
-  const newUser = await Users.create({ user_id: id, wallet: 100 + amount });
+  const newUser = await Users.create({
+    user_id: id,
+    wallet: 100 + amount,
+    bank: 0,
+  });
   currency.set(id, newUser);
 
   return newUser;
 }
 
-function getBalance(currency, id) {
-  const user = currency.get(id);
-  return user
-    ? { wallet: user.wallet, bank: user.bank }
-    : { wallet: 100, bank: 0 };
+async function getBalance(currency, id) {
+  const user =
+    currency.get(id) ??
+    (await Users.create({ user_id: id, wallet: 100, bank: 0 }));
+  return { wallet: user.wallet, bank: user.bank };
 }
 
 async function deposit(currency, id, amount) {

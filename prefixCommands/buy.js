@@ -39,7 +39,7 @@ exports.run = async (client, msg, args) => {
       return msg.reply("You can only buy 1 fishing rod.");
     }
   }
-  const balance = getBalance(client.currency, msg.author.id);
+  const balance = await getBalance(client.currency, msg.author.id);
   if (item.cost * quantity > balance.wallet) {
     return msg.reply(
       `You currently have 🪙${balance.wallet}, but you need 🪙${

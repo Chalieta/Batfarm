@@ -1,5 +1,7 @@
 const { Users, Shop, Inventory } = require("../dbObjects.js");
 const { Op } = require("sequelize");
+const { EmbedBuilder } = require("discord.js");
+const images = require("../fish.json");
 
 const fish = [
   "Carp",
@@ -64,7 +66,19 @@ exports.run = async (client, msg, args) => {
 
     await user.addItem(msg.author.id, item, 1);
 
-    msg.reply(`You caught a ${fishCaught} ${fishEmojis[random]}!`);
+    const embed = new EmbedBuilder()
+      .setColor(0x18a362)
+      .setAuthor({
+        name: `${client.users.cache.get(msg.author.id).username} - Fish`,
+        iconURL: `${client.users.cache
+          .get(msg.author.id)
+          .avatarURL({ size: 2048, extension: "jpg" })}`,
+      })
+      .setDescription(`You caught a **${fishCaught}**!`)
+      .setImage(`${images[fishCaught]}`)
+      .setTimestamp();
+    // msg.reply(`You caught a ${fishCaught} ${fishEmojis[random]}!`);
+    msg.reply({ embeds: [embed] });
   }
   //   console.log(chance);
   fishingRod.counter--;

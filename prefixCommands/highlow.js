@@ -1,3 +1,4 @@
+const { addBalance } = require("../helperMethods.js");
 exports.run = async (client, msg, args) => {
   const channel = client.channels.cache.get(msg.channelId);
   const random1 = Math.floor(Math.random() * 100) + 1; // First random number from 1-100
@@ -20,7 +21,10 @@ exports.run = async (client, msg, args) => {
     .then((ans) => {
       var answer = ans.first().content.toLowerCase();
       if (answer.startsWith(rightAnswer)) {
-        return channel.send(`You're correct! The second number is ${random2}.`);
+        addBalance(client.currency, msg.author.id, 10);
+        return channel.send(
+          `You're correct! The second number is ${random2}. You earned 🪙10`
+        );
       } else {
         return channel.send(`You're wrong! The second number is ${random2}.`);
       }
@@ -32,3 +36,4 @@ exports.run = async (client, msg, args) => {
 
 exports.name = "highlow";
 exports.aliases = ["hl"];
+exports.cooldown = 5 * 60; // 5-minute cooldown

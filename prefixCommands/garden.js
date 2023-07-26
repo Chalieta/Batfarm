@@ -1,9 +1,12 @@
 const { Users } = require("../dbObjects.js");
+const { addBalance } = require("../helperMethods.js");
 
 const emoji = { Tomato: "🍅", Eggplant: "🍆", Corn: "🌽", Pepper: "🫑" };
 
 exports.run = async (client, msg, args) => {
-  const user = await Users.findOne({ where: { user_id: msg.author.id } });
+  const user =
+    (await Users.findOne({ where: { user_id: msg.author.id } })) ??
+    (await addBalance(client.currency, msg.author.id, 0)); // Initialize the user
   const plants = await user.getPlants(msg.author.id);
 
   if (!plants.length)

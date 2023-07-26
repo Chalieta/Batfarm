@@ -1,6 +1,7 @@
 const { getBalance, addBalance } = require("../helperMethods.js");
 
-exports.run = (client, msg, args) => {
+exports.run = async (client, msg, args) => {
+  const chance = Math.floor(Math.random() * 2);
   if (msg.mentions.users.size === 0) {
     return msg.reply(
       "Mention the user you want to rob. For example: `bat rob @Batfarm`"
@@ -8,7 +9,7 @@ exports.run = (client, msg, args) => {
   }
   const target = msg.mentions.users.first();
   // Get target's wallet balance
-  const balance = getBalance(client.currency, target.id);
+  const balance = await getBalance(client.currency, target.id);
 
   // Check if the amount of money <= 0
   if (balance.wallet <= 100) {
@@ -17,6 +18,16 @@ exports.run = (client, msg, args) => {
     );
   }
 
+  if (chance === 0) {
+    addBalance(client.currency, msg.author.id, -100);
+    return msg.reply({
+      files: [
+        "https://media.tenor.com/AwnhEjcYUuEAAAAd/batman-batman-the-animated-series.gif",
+      ],
+      content:
+        "# ATTENZIONE PICKPOCKET! ATTENZIONE BORSEGGIATRICI!\nBatman catches you in action, and you're fined 🪙100",
+    });
+  }
   const amount = Math.floor(Math.random() * balance.wallet);
 
   // Transfer

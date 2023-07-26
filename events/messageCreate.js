@@ -1,9 +1,3 @@
-const {
-  addBalance,
-  getBalance,
-  deposit,
-  withdraw,
-} = require("../helperMethods.js");
 const fetch = require("node-fetch");
 const { Users, Shop, Inventory } = require("../dbObjects.js");
 const { codeBlock, Collection } = require("discord.js");
@@ -17,6 +11,12 @@ module.exports = async (client, msg) => {
   if (!msg.content.toLowerCase().startsWith(prefix) || msg.author.bot) return;
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
+  // Find user and initialize if doesn't exist
+  const user = Users.findOne({ where: { user_id: msg.author.id } });
+  if (!user) {
+    await Users.create({ user_id: id, wallet: 100 + amount });
+  }
 
   // Grab the command data from the client.commands Enmap
   const cmd =

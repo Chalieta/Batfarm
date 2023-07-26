@@ -1,7 +1,7 @@
 const { getBalance, deposit } = require("../helperMethods.js");
 
-exports.run = (client, msg, args) => {
-  const balance = getBalance(client.currency, msg.author.id);
+exports.run = async (client, msg, args) => {
+  const balance = await getBalance(client.currency, msg.author.id);
   if (args.length < 1) {
     return msg.reply(
       "Provide an amount you want to deposit. For example: `bat dep 20`"

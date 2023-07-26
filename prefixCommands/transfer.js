@@ -1,6 +1,6 @@
 const { getBalance, addBalance } = require("../helperMethods.js");
 
-exports.run = (client, msg, args) => {
+exports.run = async (client, msg, args) => {
   if (msg.mentions.users.size === 0) {
     return msg.reply(
       "Mention the user you want to transfer batcoins to. For example: `bat tf @Batfarm 5`"
@@ -27,7 +27,7 @@ exports.run = (client, msg, args) => {
     return msg.reply("Provide an amount greater than 0.");
   }
   // Check if the amount of money <= wallet
-  const balance = getBalance(client.currency, msg.author.id);
+  const balance = await getBalance(client.currency, msg.author.id);
   if (amount > balance.wallet) {
     return msg.reply(
       `Transfer failed! You only have 🪙${balance.wallet} batcoins on hand.`
