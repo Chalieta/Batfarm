@@ -38,4 +38,6 @@ exports.run = async (client, msg, args) => {
 
 exports.name = "rob";
 
+exports.cooldown = 10 * 60; // 10-minute cooldown for testing
+
 // exports.cooldown = 2 * 60 * 60; // 2-hour cooldown

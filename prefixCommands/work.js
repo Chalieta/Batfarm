@@ -13,4 +13,4 @@ exports.name = "work";
 
 exports.aliases = ["w"];
 
-// exports.cooldown = 30 * 60; // 30-minute cooldown
+// exports.cooldown = 60 * 60; // 1-hour cooldown

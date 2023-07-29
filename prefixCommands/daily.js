@@ -13,4 +13,4 @@ exports.run = (client, msg, args) => {
 
 exports.name = "daily";
 
-// exports.cooldown = 24 * 60 * 60; // 24-hour cooldown
+exports.cooldown = 24 * 60 * 60; // 24-hour cooldown

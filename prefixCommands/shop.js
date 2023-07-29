@@ -17,8 +17,9 @@ exports.run = async (client, msg, args) => {
   const embed = new EmbedBuilder()
     .setColor(0xfcc93d)
     .setTitle("Gotham's General Store")
+    .setThumbnail("https://media.tenor.com/rvoSW5YfLa8AAAAM/open-store.gif")
     .setDescription(
-      `${itemList}\n\`bat buy (item name)\` to buy an item and \`bat sell (item name)\` to sell an item.`
+      `${itemList}\nQuick tutorial:\n\`bat buy (item name)\` to buy an item.\n\`bat sell (item name)\` to sell an item.`
     )
     .setFooter({
       text: "Thank you for shopping at Gotham's General Store",

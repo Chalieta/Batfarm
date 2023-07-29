@@ -20,6 +20,9 @@ exports.run = async (client, msg, args) => {
   // const itemQuant = items.map((i) => `x${i.amount}`).join("\n");
   const embed = new EmbedBuilder()
     .setColor(0x307cab)
+    .setThumbnail(
+      "https://thumbs.gfycat.com/ElderlyAliveGoa-size_restricted.gif"
+    )
     .setDescription(`${itemList}`)
     .setAuthor({
       name: `${client.users.cache.get(msg.author.id).username}'s Inventory`,
