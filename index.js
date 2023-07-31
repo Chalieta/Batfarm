@@ -38,7 +38,7 @@ client.cooldowns = new Collection();
 client.once(Events.ClientReady, async (c) => {
   const storedBalances = await Users.findAll();
   storedBalances.forEach((b) => client.currency.set(b.user_id, b));
-  console.log(`Ready! Logged in as ${c.user.tag}`);
+  console.log(`Ready! Logged in as ${c.user.tag}.`);
 });
 
 // Events
