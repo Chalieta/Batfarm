@@ -10,7 +10,8 @@ module.exports = {
     fetch("https://cataas.com/cat/gif?json=true")
       .then((response) => response.json())
       .then((cat) => {
-        var url = `https://cataas.com/${cat.url}.gif`;
+        var url = `https://cataas.com/cat/${cat._id}.gif`;
+        console.log(url);
         interaction.editReply({ files: [url] });
       });
   },

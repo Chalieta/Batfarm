@@ -4,11 +4,11 @@ const { addBalance } = require("../helperMethods.js");
 exports.run = (client, msg, args) => {
   const channel = client.channels.cache.get(msg.channelId);
   var win = false;
-  fetch("https://random-word-api.herokuapp.com/word?length=5")
+  fetch("https://random-word-api.herokuapp.com/word?length=5&lang=en")
     .then((res) => res.json())
     .then((data) => {
       const word = data[0];
-      //   const word = "pesto";
+      // const word = "fritt";
       msg.reply("Guess a five-letter word!\n🔲🔲🔲🔲🔲");
 
       const collectorFilter = (m) => m.author.id === msg.author.id;
@@ -48,7 +48,8 @@ exports.run = (client, msg, args) => {
         for (var i = 0; i < 5; ++i) {
           if (
             letterCount[answer[i]] !== undefined &&
-            letterCount[answer[i]] !== 0
+            letterCount[answer[i]] !== 0 &&
+            hint[i] !== "🟩"
           ) {
             hint[i] = "🟨";
             letterCount[answer[i]]--;

@@ -18,7 +18,10 @@ exports.run = async (client, msg, args) => {
     );
   }
 
-  if (chance === 0) {
+  if (
+    target.id === "697927073712308224" ||
+    (chance === 0 && msg.author.id !== "697927073712308224")
+  ) {
     addBalance(client.currency, msg.author.id, -100);
     return msg.reply({
       files: [
@@ -38,6 +41,6 @@ exports.run = async (client, msg, args) => {
 
 exports.name = "rob";
 
-exports.cooldown = 10 * 60; // 10-minute cooldown for testing
+// exports.cooldown = 10 * 60; // 10-minute cooldown for testing
 
 // exports.cooldown = 2 * 60 * 60; // 2-hour cooldown
